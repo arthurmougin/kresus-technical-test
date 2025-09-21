@@ -11,12 +11,13 @@ import { Todo } from '@prisma/client';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { LoginPayload, LoginResponse } from './auth/entities/login.interface';
+import { CreateTodoDto } from './dto/create-todo.dto';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   @Post('login')
@@ -30,5 +31,11 @@ export class AppController {
   @Get('todos')
   getTodos(): Promise<Todo[]> {
     return this.appService.getAllTodo();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('todos')
+  createTodo(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
+    return this.appService.createTodo(createTodoDto);
   }
 }
