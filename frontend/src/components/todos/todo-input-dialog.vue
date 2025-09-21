@@ -59,7 +59,7 @@ async function handleSubmit(event: SubmitEvent) {
     //format dateValue to ISO string //2021-10-01T00:00:00.000Z
     todo.executionDate = dateValue.value.toString() + "T00:00:00.000Z"
   }
-  console.log("Submitting todo:", todo)
+
   try {
     await useTodoStore().addTodo(todo)
     //emit to parent a submit event

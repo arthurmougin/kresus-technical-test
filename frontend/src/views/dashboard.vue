@@ -24,7 +24,6 @@ onMounted(async () => {
 });
 
 function handleSubmit(todo: Todo) {
-  console.log("ajouter une tâche:", todo);
   //As data is shallow, only a full refresh will guaranty that the table is updated
   data.value = [...todoStore.todos];
 }
