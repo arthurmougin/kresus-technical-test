@@ -37,7 +37,7 @@ import { Todo, TodoPriority } from "../../definitions.d"
 const df = new DateFormatter("en-US", {
   dateStyle: "long",
 })
-
+const open = ref(false)
 const dateValue = ref<DateValue>()
 
 // Ajout de l'exposition de l'événement submit
@@ -63,18 +63,16 @@ async function handleSubmit(event: SubmitEvent) {
   try {
     await useTodoStore().addTodo(todo)
     //emit to parent a submit event
-    emit("submit", todo)
+    emit("submit", todo);
   } catch (error) {
     console.error(error)
   }
-  console.log("Todo added successfully:", todo)
-  console.log(useTodoStore().$state.todos)
-
+  open.value = false
 }
 </script>
 
 <template>
-  <Dialog>
+  <Dialog v-model:open="open">
     <DialogTrigger as-child>
       <Button variant="outline">
         Ajouter une tâche
