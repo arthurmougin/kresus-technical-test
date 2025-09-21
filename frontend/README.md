@@ -13,8 +13,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/kresus-test-technique.git
-cd kresus-test-technique/frontend
+git clone https://github.com/arthurmougin/kresus-technical-test.git
+cd kresus-technical-test/frontend
 
 # Install dependencies
 npm install
