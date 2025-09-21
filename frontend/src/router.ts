@@ -3,6 +3,7 @@ import dashboard from "./views/dashboard.vue";
 import login from "./views/login.vue";
 import home from "./views/home.vue";
 import { useAuthStore } from "./store/auth.store";
+
 const routes = [
   {
     name: "home",

@@ -1,15 +1,14 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef, SortingState } from '@tanstack/vue-table'
-import { ArrowUpDown, ChevronDown } from 'lucide-vue-next'
-import { h, ref } from 'vue'
+import { ref } from 'vue'
 import {
+  ColumnDef,
+  SortingState,
   FlexRender,
   getCoreRowModel,
   getSortedRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
 import { valueUpdater } from '../../lib/utils'
-
 import {
   Table,
   TableBody,

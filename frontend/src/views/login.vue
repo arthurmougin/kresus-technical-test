@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { useAuthStore } from "../store/auth.store.ts";
+import { AlertCircle } from "lucide-vue-next"
 import router from "../router";
+import { useAuthStore } from "../store/auth.store.ts";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 import { Button } from "../components/ui/button"
-import { AlertCircle } from "lucide-vue-next"
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert"
 
 const alertError = ref(false)
@@ -38,8 +38,8 @@ async function handleSubmit(event: Event) {
     </AlertDescription>
   </Alert>
 
-  <form @submit="handleSubmit">
-    <Card class="w-full max-w-md">
+  <form @submit="handleSubmit" class="w-full max-w-lg">
+    <Card>
       <CardHeader>
         <CardTitle class="text-2xl">
           Connexion

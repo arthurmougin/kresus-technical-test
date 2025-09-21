@@ -1,15 +1,6 @@
 import { defineStore } from "pinia";
 import router from "../router";
-
-interface User {
-  email: string;
-  // Add other user fields as needed
-}
-
-interface AuthState {
-  token: string | null;
-  user: User | null;
-}
+import { AuthState } from "../definitions";
 
 export const useAuthStore = defineStore("auth", {
   state: (): AuthState => ({
@@ -32,6 +23,7 @@ export const useAuthStore = defineStore("auth", {
       this.token = null;
       this.user = null;
       localStorage.removeItem("jwt");
+      localStorage.removeItem("user");
       router.push({ name: "home" });
     },
     async login(email: string, password: string) {

@@ -1,28 +1,33 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, shallowRef } from 'vue';
 import { useAuthStore } from '../store/auth.store';
 import { Button } from '../components/ui/button';
 import { useTodoStore } from '../store/todo.store';
-import type { Todo } from '../store/todo.store';
-
-const user = useAuthStore().$state.user;
-const todoStore = useTodoStore();
-
 import { columns } from '../components/todos/todo-columns';
 import todoDataTable from '../components/todos/todo-data-table.vue';
 import todoInputDialog from '../components/todos/todo-input-dialog.vue';
+import { Todo } from '../definitions';
 
-const data = ref<Todo[]>([]);
+
+const user = useAuthStore().$state.user;
+const todoStore = useTodoStore();
+const data = shallowRef<Todo[]>([]);
 
 onMounted(async () => {
   try {
     await todoStore.fetchAllTodos();
-    data.value = todoStore.$state.todos;
+    data.value = todoStore.todos;
   } catch (error) {
     console.error("Error fetching todos:", error);
     useAuthStore().logout();
   }
 });
+
+function handleSubmit(todo: Todo) {
+  console.log("ajouter une tâche:", todo);
+  //As data is shallow, only a full refresh will guaranty that the table is updated
+  data.value = [...todoStore.todos];
+}
 
 </script>
 
@@ -34,7 +39,7 @@ onMounted(async () => {
   <main>
     <div class="container py-10 mx-auto">
       <todoDataTable :columns="columns" :data="data" class="m-4" />
-      <todoInputDialog />
+      <todoInputDialog @submit="handleSubmit" />
     </div>
   </main>
 </template>

@@ -1,9 +1,8 @@
 import { h } from "vue";
 import type { ColumnDef } from "@tanstack/vue-table";
-import type { Todo } from "../../store/todo.store";
-import todoDataTableDropdown from "./todo-data-table-dropdown.vue";
-import { ArrowUpDown, ChevronDown } from "lucide-vue-next";
+import { ArrowUpDown } from "lucide-vue-next";
 import { Button } from "../ui/button";
+import { Todo, TodoPriority } from "../../definitions.d";
 
 export const columns: ColumnDef<Todo>[] = [
   {
@@ -13,6 +12,7 @@ export const columns: ColumnDef<Todo>[] = [
         Button,
         {
           variant: "ghost",
+          class: "text-right font-medium",
           onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
         },
         () => ["Titre", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
@@ -33,6 +33,7 @@ export const columns: ColumnDef<Todo>[] = [
         Button,
         {
           variant: "ghost",
+          class: "text-right font-medium",
           onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
         },
         () => ["Priorité", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
@@ -40,24 +41,28 @@ export const columns: ColumnDef<Todo>[] = [
     },
     cell: ({ row }) => {
       //color code
-      const priority: string = row.getValue("priority");
+      const priority: TodoPriority = row.getValue("priority");
 
       //make it a switch
 
       let color = "text-gray-500"; // default color
+      let text = "";
       switch (priority) {
-        case "HIGH":
+        case TodoPriority.HIGH:
           color = "text-red-500";
+          text = "Haute";
           break;
-        case "MEDIUM":
+        case TodoPriority.MEDIUM:
           color = "text-yellow-500";
+          text = "Moyenne";
           break;
-        case "LOW":
+        case TodoPriority.LOW:
           color = "text-green-500";
+          text = "Basse";
           break;
       }
 
-      return h("div", { class: `text-right ${color}` }, priority);
+      return h("div", { class: `text-right ${color}` }, text);
     },
   },
   {
@@ -67,31 +72,17 @@ export const columns: ColumnDef<Todo>[] = [
         Button,
         {
           variant: "ghost",
+          class: "text-right font-medium",
           onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
         },
-        () => ["Date d'exécution", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+        () => ["Date limite", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
       );
     },
     cell: ({ row }) => {
-      const formatedDate = new Date(
-        row.getValue("executionDate")
-      ).toLocaleDateString();
+      const formatedDate = row.getValue("executionDate")
+        ? new Date(row.getValue("executionDate")).toLocaleDateString()
+        : "";
       return h("div", { class: "text-right" }, formatedDate);
     },
   },
-  /*{
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const todo = row.original;
-
-      return h(
-        "div",
-        { class: "relative" },
-        h(todoDataTableDropdown, {
-          todo,
-        })
-      );
-    },
-  },*/
 ];
