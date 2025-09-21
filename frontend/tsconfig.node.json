@@ -3,6 +3,7 @@
     "target": "esnext",
     "lib": ["ESNext"],
     "module": "ESNext",
+    "types": ["vite/client"],
 
     "skipLibCheck": true,
 
@@ -25,5 +26,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "vite-env.d.ts"]
 }
