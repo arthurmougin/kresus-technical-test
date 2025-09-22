@@ -16,7 +16,7 @@ const originalPagination = 5;
 
 onMounted(async () => {
   try {
-    await todoStore.fetchAllTodos();
+    await todoStore.fetchNextTodos(originalPagination);
     data.value = todoStore.todos;
   } catch (error) {
     console.error("Error fetching todos:", error);
