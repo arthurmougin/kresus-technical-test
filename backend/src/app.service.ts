@@ -7,8 +7,30 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 export class AppService {
   constructor(private prisma: PrismaService) {}
 
-  getAllTodo(): Promise<Todo[]> {
-    return this.prisma.todo.findMany();
+  getAllTodo(qte: number, cursor: number): Promise<Todo[]> {
+    if (qte == undefined || cursor == undefined) {
+      return this.prisma.todo.findMany();
+    }
+
+    if (cursor < 0) {
+      return this.prisma.todo.findMany({
+        take: Number(qte),
+        orderBy: {
+          id: 'asc',
+        },
+      });
+    }
+
+    return this.prisma.todo.findMany({
+      take: Number(qte),
+      skip: 1,
+      cursor: {
+        id: Number(cursor),
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
   }
 
   async createTodo(data: CreateTodoDto): Promise<Todo> {

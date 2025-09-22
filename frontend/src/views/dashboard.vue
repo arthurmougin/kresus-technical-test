@@ -12,6 +12,7 @@ import { Todo } from '../definitions';
 const user = useAuthStore().$state.user;
 const todoStore = useTodoStore();
 const data = shallowRef<Todo[]>([]);
+const originalPagination = 5;
 
 onMounted(async () => {
   try {
@@ -28,6 +29,10 @@ function handleSubmit(todo: Todo) {
   data.value = [...todoStore.todos];
 }
 
+function handleAdditions(todos: Todo[]) {
+  data.value = [...todoStore.todos];
+}
+
 </script>
 
 <template>
@@ -37,7 +42,8 @@ function handleSubmit(todo: Todo) {
   </header>
   <main>
     <div class="container py-10 mx-auto">
-      <todoDataTable :columns="columns" :data="data" class="m-4" />
+      <todoDataTable :columns="columns" :data="data" class="m-4" :page-size="originalPagination"
+        @additions="handleAdditions" />
       <todoInputDialog @submit="handleSubmit" />
     </div>
   </main>

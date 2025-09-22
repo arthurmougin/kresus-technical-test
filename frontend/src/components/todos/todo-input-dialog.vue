@@ -40,7 +40,6 @@ const df = new DateFormatter("en-US", {
 const open = ref(false)
 const dateValue = ref<DateValue>()
 
-// Ajout de l'exposition de l'événement submit
 const emit = defineEmits<{
   (e: "submit", todo: Todo): void
 }>()

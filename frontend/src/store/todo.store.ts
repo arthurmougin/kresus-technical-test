@@ -12,7 +12,7 @@ export const useTodoStore = defineStore("todo", {
       // Convert priority index to string for backend
       apiReadyTodo.priority = TodoPriority[apiReadyTodo.priority];
 
-      const options = {
+      const options: RequestInit = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +36,7 @@ export const useTodoStore = defineStore("todo", {
       this.todos = this.todos.filter((t) => t.id !== todo.id);
     },
     async fetchAllTodos() {
-      const options = {
+      const options: RequestInit = {
         method: "GET",
         headers: {
           Authorization: `Bearer ${useAuthStore().token}`,
@@ -56,6 +56,32 @@ export const useTodoStore = defineStore("todo", {
         ...todo,
         priority: TodoPriority[todo.priority as keyof typeof TodoPriority],
       }));
+    },
+    async fetchNextTodos(n: number) {
+      const options: RequestInit = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`,
+        },
+      };
+      const cursor =
+        this.todos.length < 1 ? -1 : this.todos[this.todos.length - 1].id;
+      const response = await fetch(
+        `http://localhost:3000/todos?qte=${n}&cursor=${cursor}`,
+        options
+      );
+      console.log(response);
+
+      if (!response.ok) throw new Error("request failed");
+
+      const data = await response.json();
+      const addedTodos: Todo[] = data.map((todo: any) => ({
+        ...todo,
+        priority: TodoPriority[todo.priority as keyof typeof TodoPriority],
+      }));
+
+      this.todos.push(...addedTodos);
+      return addedTodos;
     },
   },
 });

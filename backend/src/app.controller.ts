@@ -5,6 +5,7 @@ import {
   Post,
   UnauthorizedException,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Todo } from '@prisma/client';
@@ -29,8 +30,11 @@ export class AppController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('todos')
-  getTodos(): Promise<Todo[]> {
-    return this.appService.getAllTodo();
+  getTodos(
+    @Query('qte') qte: number,
+    @Query('cursor') cursor: number,
+  ): Promise<Todo[]> {
+    return this.appService.getAllTodo(qte, cursor);
   }
 
   @UseGuards(AuthGuard('jwt'))
